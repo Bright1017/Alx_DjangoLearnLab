@@ -1,7 +1,18 @@
 from django.contrib import admin
-from .models import Book
+from models import Book
 
-# Register your models here.
-from bookshelf.models import Book
-book = Book.objects.create(title="1984", author="George Orwell", publication_year=1949)
-print(book)
+
+# Custom admin class for the Book model
+class BookAdmin(admin.ModelAdmin):
+    # Display these fields in the list view
+    list_display = ('title', 'author', 'publication_year')
+
+    # Add filters for the publication year and author
+    list_filter = ('publication_year', 'author')
+
+    # Enable search functionality for title and author
+    search_fields = ('title', 'author')
+
+
+# Register the Book model
+admin.site.register(Book)
