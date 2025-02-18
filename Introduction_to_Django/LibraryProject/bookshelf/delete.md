@@ -1,2 +1,18 @@
+# Delete a Book
+
+## Command:
+```python
+from bookshelf.models import Book
+
+book = Book(pk=1)
 book.delete()
-print(Book.objects.all())  # Should return an empty queryset
+
+# Verify deletion
+books = Book.objects.all()
+print(books)  # Expected Output: <QuerySet []>
+```
+
+## Expected Output:
+```
+<QuerySet []>
+```
