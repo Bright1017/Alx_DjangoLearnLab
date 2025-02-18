@@ -13,6 +13,5 @@ class BookAdmin(admin.ModelAdmin):
     # Enable search functionality for title and author
     search_fields = ('title', 'author')
 
-
-# Register the Book model
-admin.site.register(Book)
+# Register the Book model with the custom admin class
+admin.site.register(Book, BookAdmin)
