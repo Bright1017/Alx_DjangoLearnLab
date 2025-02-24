@@ -23,17 +23,17 @@ class LibraryDetailView(DetailView):
     
 
 # User Registration Class base View    
-# class SignupView(CreateView):
-#     form_class = UserCreationForm
-#     success_url = reverse_lazy("login")
-#     template_name = "register.html"
+class SignupView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "register.html"
     
 
-# class CustomLoginView(LoginView):
-#     template_name = 'login.html'
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
     
-# class CustomLogoutView(LogoutView):
-#     template_name = 'logout.html'
+class CustomLogoutView(LogoutView):
+    template_name = 'logout.html'
 
 # User Registration Function base View
 def register_view(request):
