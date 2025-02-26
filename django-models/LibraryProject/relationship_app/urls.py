@@ -20,5 +20,8 @@ urlpatterns = [
     path("register/", views.register_view, name="register"),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
-    path("", auth_views.TemplateView.as_view(template_name="registration_app/home.html"), name="home")  # Home page
+    path("", auth_views.TemplateView.as_view(template_name="registration_app/home.html"), name="home"),  # Home page
+    path('add_book/', views.add_book, name="add_book"),
+    path('edit_book/', views.edit_book, name="edit_book"),
+    path('delete_book/', views.delete_book, name="delete_book"),
 ]
