@@ -133,7 +133,7 @@ Database Operations: Perform and document each CRUD operation in the Django shel
 """
 
 from django.contrib.auth.models import AbstractUser
-
+from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import BaseUserManager
 from django.db import models
@@ -144,6 +144,13 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     publication_year = models.IntegerField()
     
+    class Meta:
+        permission = [
+          ("can_view","can view"),
+          ("can_create", "can create"),
+          ("can_edit", "can edit")  
+        ]
+
     def __str__(self):
         return f"{self.title} by {self.author} ({self.publication_year})"
 
@@ -174,7 +181,6 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     # Remove username from REQUIRED_FIELDS and make email unique
-    # email = models.EmailField(_('email address'), unique=True)
     date_of_birth = models.DateField(_('Date of Birth'), null=True, blank=True)
     profile_photo = models.ImageField(upload_to= 'Profile Photo/', null=True, blank=True)
 
@@ -183,5 +189,18 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
+    class Meta:
+        permission = [
+          ("can_view" "can view"),
+          ("can_create" "can create"),
+          ("can_edit" "can edit")  
+        ]
+
     def __str__(self):
         return self.email
+    
+    class UserGroup(Group):
+        ...
+
+    def __str__(self):
+        return self.get_full_name
