@@ -1,7 +1,7 @@
 """
 URL configuration for LibraryProject project.
 
-The urlpatterns list routes URLs to views. For more information please see:
+The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
 Examples:
 Function views
@@ -16,8 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('relationship_app.urls'))
+    path('relationship_app/', include('relationship_app.urls')),
+    path('bookshelf/', include('bookshelf.urls')),
+    path('accounts/login_user/', auth_views.LoginView.as_view(template_name='bookshelf/form_example.html'), name='login_user')
 ]

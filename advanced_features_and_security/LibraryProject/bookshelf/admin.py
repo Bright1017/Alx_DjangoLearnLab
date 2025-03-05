@@ -17,28 +17,16 @@ Implement custom configurations to display title, author, and publication_year i
 Configure list filters and search capabilities to enhance the admin’s usability for Book entries.
 """
 
-
-
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, Book
 
-
-# Custom admin class for the Book model
-class BookAdmin(admin.ModelAdmin):
-    # Display these fields in the list view
-    list_display = ('title', 'author', 'publication_year')
-
-    # Add filters for the publication year and author
-    list_filter = ('publication_year', 'author')
-
-    # Enable search functionality for title and author
-    search_fields = ('title', 'author')
-
-# Register the Book model with the custom admin class
-admin.site.register(Book, BookAdmin)
+# Register your models here.
 class CustomUserAdmin(admin.ModelAdmin):
-    model = CustomUser
-    list_display = ('email', 'username', 'date_of_birth', 'profile_photo')
+    list_display = ('username', 'email', 'date_of_birth', 'profile_photo')
 
+class BookAdmin(admin.ModelAdmin):
+    list_filter = (("title", "author"))
+    search_fields = ("title", "author")
+
+admin.site.register(Book, BookAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
