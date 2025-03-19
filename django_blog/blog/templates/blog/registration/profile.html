@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="auth-container">
+    <h2 class="auth-title">Profile Settings</h2>
+    
+    <!-- Success Messages -->
+    {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="auth-form">
+        {% csrf_token %}
+        
+        <!-- User Form -->
+        <div class="form-group">
+            <label>Username</label>
+            {{ user_form.username }}
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            {{ user_form.email }}
+        </div>
+
+        <!-- Profile Form -->
+        <div class="form-group">
+            <label>Bio</label>
+            {{ profile_form.bio }}
+        </div>
+        <div class="form-group">
+            <label>Website</label>
+            {{ profile_form.website }}
+        </div>
+        <div class="form-group">
+            <label>Profile Picture</label>
+            {{ profile_form.profile_picture }}
+            {% if request.user.profile.profile_picture %}
+                <img 
+                    src="{{ request.user.profile.profile_picture.url }}" 
+                    class="profile-picture-preview"
+                    alt="Current profile picture"
+                >
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+</div>
+{% endblock %}

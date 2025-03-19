@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'django_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydatabase',
-        'USER': 'Bright',
-        'PASSWORD': 'bright101',
-        'HOST': 'localhost',
-        'PORT': '3306'
+         'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'USER': 'Bright',
+        # 'PASSWORD': 'bright101',
+        # 'HOST': 'localhost',
+        # 'PORT': '3306'
     }
 }
 
@@ -142,3 +142,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Redirect to home after login
+LOGIN_REDIRECT_URL = 'post_list'
+
+# Redirect to login page for protected views
+LOGIN_URL = 'login'
