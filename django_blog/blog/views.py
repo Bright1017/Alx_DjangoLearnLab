@@ -26,7 +26,7 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     next_page = 'post_list'  # Redirect to homepage after logout
 
-# # Profile Management View
+# Profile Management View
 # @login_required
 # def profile(request):
 #     if request.method == 'POST':

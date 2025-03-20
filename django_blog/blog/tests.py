@@ -7,9 +7,9 @@ class AuthTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpass123')
 
-    # def test_login_view(self):
-    #     response = self.client.post(reverse('login'), {'username': 'testuser', 'password': 'testpass123'})
-    #     self.assertEqual(response.status_code, 302)  # Redirect after login
+    def test_login_view(self):
+        response = self.client.post(reverse('login'), {'username': 'testuser', 'password': 'testpass123'})
+        self.assertEqual(response.status_code, 302)  # Redirect after login
 
     def test_profile_access_unauthorized(self):
         response = self.client.get(reverse('profile'))
