@@ -20,6 +20,7 @@ urlpatterns = [
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('profile/', profile, name='profile'),
     path('', PostListView.as_view(), name='post_list'),
+    "post/<int:pk>/delete/", "post/<int:pk>/update/", "post/new/",
     
     # Create new post
     path('new/', PostCreateView.as_view(), name='post_create'),
