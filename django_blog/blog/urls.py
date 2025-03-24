@@ -1,37 +1,24 @@
 from django.urls import path
-from .views import (
-    post_list,
-    register,
-    profile,
-    CustomLoginView,
-    CustomLogoutView
-)
-from .views import (
-    PostListView, PostDetailView,
-    PostCreateView, PostUpdateView, PostDeleteView
-)
-
+from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    # Authentication URLs
-    path('', post_list, name='post_list'),
-    path('register/', register, name='register'),
-    path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', CustomLogoutView.as_view(), name='logout'),
-    path('profile/', profile, name='profile'),
-    path('', PostListView.as_view(), name='post_list'),
-    "post/<int:pk>/delete/", "post/<int:pk>/update/", "post/new/",
-    
-    # Create new post
-    path('new/', PostCreateView.as_view(), name='post_create'),
-    
-    # Post detail
-    path('<int:pk>/', PostDetailView.as_view(), name='post_detail'),
-    
-    # Edit post
-    path('<int:pk>/edit/', PostUpdateView.as_view(), name='post_update'),
-    
-    # Delete post
-    path('<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
-
+    path('register/', views.RegisterView.as_view(), name='register'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('home/', views.HomePageView.as_view(), name='home'),
+    path('profile/<int:id>/', views.ProfileView.as_view(), name='profile'),
+    path('updateprofile/', views.updateprofile, name='updateprofile'),
+    path('logout/', views.logoutview, name='logout'),
+    path('user/<int:id>/', views.UserPageView.as_view(), name='userposts'),
+    path('post/new/', views.createpostview, name='create-post'),
+    path('post/<int:pk>/view', views.view_post, name='view-post'),
+    path('post/<int:pk>/update/', views.edit_post, name='update-post'),
+    path('post/<int:pk>/delete/', views.delete_post, name='delete-post'),
+    path('post/<int:pk>/comments/new/', views.add_comment, name='add-comment'),
+    path("comment/<int:pk>/delete/", views.delete_comment, name='delete-comment'),
+    path('search/', views.search, name='search'),
 ]
+
+["comment/<int:pk>/update/"]
+["/tags/<tag_name>/"]
+["tags/<slug:tag_slug>/", "PostByTagListView.as_view()"]

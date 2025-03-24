@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Post, Category, Tag, Comment
+from .models import Post
 
 # Register your models here.
-admin.site.register(Post)
-admin.site.register(Category)
-admin.site.register(Tag)
-admin.site.register(Comment)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['title', 'content', 'published_date', 'author']
+    list_filter = ['published_date']
+    search_fields = ['author']
+
+admin.site.register(Post, PostAdmin)

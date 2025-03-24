@@ -1,62 +1,80 @@
-from django import forms
-from .models import Post, Category, Tag
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from .models import Post, Comment
+from taggit.forms import TagWidget
 
-class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(label='Your Email')
+    username = forms.CharField(max_length=100, label='Your Username')
+    
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
-
-    def save(self, commit=True):
-        user = super().save(commit=True)
-        user.email = self.cleaned_data["email"]
-        if commit:
-            user.save()
-        return user
+        fields = ['email', 'username', 'password1', 'password2']
+        
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).first():
+            raise forms.ValidationError('Email already exist!')
+        return email
+        
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).first():
+            raise forms.ValidationError('Username already exist!')
+        return username
+                
+class LoginForm(forms.Form):
+    email = forms.EmailField(help_text="Please, enter valid email address")
+    password = forms.CharField(widget=forms.PasswordInput())
     
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+        if email and password:
+            return cleaned_data 
 
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
+class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']
 
-class ProfileUpdateForm(forms.ModelForm):
+class CreatePostForm(forms.ModelForm):
+    title = forms.CharField(max_length=100)
+    content = forms.CharField(widget=forms.TextInput())
+    tags = forms.CharField(widget=TagWidget())
     class Meta:
-        model = Profile
-        fields = ['bio', 'profile_picture', 'website']
-
-class PostForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorUploadingWidget())
-    
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
+        model = Post
+        fields = ['title', 'content', 'author', 'tags']
+        
+        widgets = {
+                'tags': TagWidget(attrs={'class': 'form-control'}),  # Use TagWidget for tag input
+            }
 
     def clean(self):
         cleaned_data = super().clean()
-        if self.instance.pk and self.user != self.instance.author:
-            raise forms.ValidationError("You don't own this post!")
-        return cleaned_data
-    
+        title = cleaned_data.get('title')
+        content = cleaned_data.get('content')
+        if title and content:
+            return cleaned_data
+        
+class UpdatePostForm(forms.ModelForm):
+    title = forms.CharField(max_length=100)
+    content = forms.CharField(widget=forms.TextInput())
+
     class Meta:
         model = Post
-        fields = ['title', 'content', 'category', 'tags']
-        
-        widgets = {
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'tags': forms.SelectMultiple(attrs={'class': 'form-control'}),
-        }
+        fields = ['title', 'content', 'author']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Limit category choices to existing categories
-        self.fields['category'].queryset = Category.objects.all()
-        # Limit tag choices to existing tags
-        self.fields['tags'].queryset = Tag.objects.all()
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
+        
+class SearchForm(forms.Form):
+    name=forms.CharField(max_length=255)
