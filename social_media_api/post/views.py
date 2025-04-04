@@ -123,55 +123,55 @@ class PostView(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 """Generic Views for CRUD Operations"""
-# class CommentCreateView(generics.CreateAPIView):
-#     authentication_classes = [TokenAuthentication]  
-#     permission_classes = [IsAuthenticated]
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
+class CommentCreateView(generics.CreateAPIView):
+    authentication_classes = [TokenAuthentication]  
+    permission_classes = [IsAuthenticated]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
-#     def create(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         if serializer.is_valid():
-#             # print(serializer.validated_data)
-#             serializer.save()
-#             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            # print(serializer.validated_data)
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-# class CommentListView(generics.ListAPIView):
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
+class CommentListView(generics.ListAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
-# class CommentRetrieveView(generics.RetrieveAPIView):
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
-#     lookup_field = "id"
+class CommentRetrieveView(generics.RetrieveAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    lookup_field = "id"
 
-# class CommentUpdateView(generics.UpdateAPIView):
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
-#     lookup_field = "id"
+class CommentUpdateView(generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    lookup_field = "id"
 
 
-# class CommentDeleteView(generics.DestroyAPIView):
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
-#     lookup_field = "id"
+class CommentDeleteView(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    lookup_field = "id"
 
-#     def delete(self, request, *args, **kwargs):
-#         current_user_id = request.user.id
-#         author_id = request.data.get('author')
-#         print(current_user_id, author_id)
-#         if current_user_id != author_id:
-#             return Response(data={'Error': 'You are not permmitted to delete a post that you did not create!'}, status=status.HTTP_403_FORBIDDEN)
-#         return super().delete(request, *args, **kwargs)
+    def delete(self, request, *args, **kwargs):
+        current_user_id = request.user.id
+        author_id = request.data.get('author')
+        print(current_user_id, author_id)
+        if current_user_id != author_id:
+            return Response(data={'Error': 'You are not permmitted to delete a post that you did not create!'}, status=status.HTTP_403_FORBIDDEN)
+        return super().delete(request, *args, **kwargs)
 
 """ModelViewset for CRUD Operations"""
 class CommentView(viewsets.ModelViewSet):
